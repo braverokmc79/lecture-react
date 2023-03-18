@@ -26,7 +26,7 @@ class App extends React.Component {
   handleReset() {
     this.setState(
       () => {
-        return { searchKeyword: "" };
+        return { searchKeyword: "", submitted: false };
       },
       () => {
         console.log("TODO : handleReset ", this.state.searchKeyword);
@@ -39,6 +39,11 @@ class App extends React.Component {
     if (event.target.value.length <= 0) {
       return this.handleReset();
     }
+
+    if (this.state.searchKeyword.length <= 0 && this.state.submitted) {
+      return this.handleReset();
+    }
+
     this.setState({
       searchKeyword: event.target.value,
     });
