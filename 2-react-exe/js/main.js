@@ -4,6 +4,7 @@ class App extends React.Component {
 
     this.state = {
       searchKeyword: "",
+      searchResult: "",
     };
   }
 
@@ -26,7 +27,7 @@ class App extends React.Component {
   handleChangeInput(event) {
     // this.state.searchKeyword = event.target.value;
     // this.forceUpdate();
-    if (searchKeyword.length <= 0) {
+    if (event.target.value.length <= 0) {
       return this.handleReset();
     }
     this.setState({
@@ -60,6 +61,13 @@ class App extends React.Component {
             />
             {resetButton}
           </form>
+          <div className="content">
+            {this.state.searchResult.length > 0 ? (
+              <div>TODO :검색 결과 목록 표시하기</div>
+            ) : (
+              <div className="empty-box">검색 결과가 없습니다.</div>
+            )}
+          </div>
         </div>
       </>
     );
