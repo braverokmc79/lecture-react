@@ -7,6 +7,7 @@ class App extends React.Component {
     this.state = {
       searchKeyword: "",
       searchResult: [],
+      submitted: false,
     };
   }
 
@@ -19,7 +20,7 @@ class App extends React.Component {
 
   search(searchKeyword) {
     const searchResult = store.search(searchKeyword);
-    this.setState({ searchResult });
+    this.setState({ searchResult, submitted: true });
   }
 
   handleReset() {
@@ -50,25 +51,25 @@ class App extends React.Component {
       resetButton = <button type="reset" className="btn-reset"></button>;
     }
 
-    return (
+    const searchForm = (
+      <form
+        onSubmit={(event) => this.handleSubmit(event)}
+        onReset={() => this.handleReset()}
+      >
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          autoFocus
+          value={this.state.searchKeyword}
+          onChange={(event) => this.handleChangeInput(event)}
+        />
+        {resetButton}
+      </form>
+    );
+
+    const SearchResult = () => (
       <>
-        <header>
-          <h2 className="container">검색</h2>
-        </header>
-        <div className="container">
-          <form
-            onSubmit={(event) => this.handleSubmit(event)}
-            onReset={() => this.handleReset()}
-          >
-            <input
-              type="text"
-              placeholder="검색어를 입력하세요"
-              autoFocus
-              value={this.state.searchKeyword}
-              onChange={(event) => this.handleChangeInput(event)}
-            />
-            {resetButton}
-          </form>
+        {this.state.submitted && (
           <div className="content">
             {this.state.searchResult.length > 0 ? (
               <ul className="result">
@@ -85,6 +86,20 @@ class App extends React.Component {
               <div className="empty-box">검색 결과가 없습니다.</div>
             )}
           </div>
+        )}
+      </>
+    );
+
+    return (
+      <>
+        <header>
+          <h2 className="container">검색</h2>
+        </header>
+
+        {searchForm}
+
+        <div className="container">
+          <SearchResult />
         </div>
       </>
     );
